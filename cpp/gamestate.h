@@ -4,6 +4,7 @@
 struct GameState {
     int nlines, ncolumns;
     Point * activePoints;
+    int qtdActivePoints;
     Tetromino currentTetromino;
     Tetromino nextTetromino;
     int score;
