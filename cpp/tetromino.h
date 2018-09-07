@@ -26,3 +26,5 @@ Tetromino moveRight(Tetromino tetromino);
 Tetromino rotateClockwise(Tetromino tetromino);
 
 Tetromino rotateAnticlockwise(Tetromino tetromino);
+
+Tetromino getRandomTetromino();
