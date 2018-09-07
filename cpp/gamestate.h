@@ -1,3 +1,5 @@
+#pragma once
+
 #include "point.h"
 #include "tetromino.h"
 

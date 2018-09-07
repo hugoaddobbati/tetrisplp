@@ -3,8 +3,8 @@ CFLAGS = -std=c++14
 LIBS = -lncurses
 
 DEPS = *.h
-SRCS = colors.cpp gamestate.cpp gui.cpp menu.cpp point.cpp point.cpp tetris.cpp tetromino.cpp
-OBJS = colors.o gamestate.o gui.o menu.o point.o point.o tetris.o tetromino.o
+SRCS = colors.cpp gamestate.cpp gui.cpp menu.cpp point.cpp tetris.cpp tetromino.cpp main.cpp
+OBJS = colors.o gamestate.o gui.o menu.o point.o tetris.o tetromino.o main.o
 
 all: run
 
@@ -12,8 +12,8 @@ all: run
 	$(CC) -c -o $@ $< $(CFLAGS) $(LIBS)
 
 run: $(OBJS)
-	$(CC) -o $@ $^
+	$(CC) -o $@ $^ $(LIBS)
 
 clean:
 	rm -rf *.o
-	rm run
+	rm -f run

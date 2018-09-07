@@ -1,3 +1,5 @@
+#pragma once
+
 #include "point.h"
 
 /**
@@ -9,13 +11,13 @@ struct Tetromino{
     Point points[4];
 };
 
-Tetromino I;
-Tetromino O;
-Tetromino T;
-Tetromino S;
-Tetromino Z;
-Tetromino J;
-Tetromino L;
+extern Tetromino I;
+extern Tetromino O;
+extern Tetromino T;
+extern Tetromino S;
+extern Tetromino Z;
+extern Tetromino J;
+extern Tetromino L;
 
 void setupTetrominos();
 

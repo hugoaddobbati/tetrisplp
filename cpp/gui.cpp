@@ -19,6 +19,6 @@ char getChar(){
     return 'a';
 }
 
-void ends(){
+void rollback(){
     
 }

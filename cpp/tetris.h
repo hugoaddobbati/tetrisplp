@@ -1,10 +1,12 @@
+#pragma once
+
 #include "gamestate.h"
 #include "gui.h"
 
-GameState state;
+extern GameState state;
 
 void start();
 
 void play();
 
-void ends();
+void endGame();

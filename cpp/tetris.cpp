@@ -8,6 +8,6 @@ void play(){
 
 }
 
-void ends(){
+void endGame(){
     
 }
