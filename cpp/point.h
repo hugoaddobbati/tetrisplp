@@ -11,6 +11,9 @@ struct Point {
     int color;
 };
 
+// returns true if the points are equal with relation with the coordinates
+bool isEqual(Point pointA, Point pointB);
+
 Point moveDown(Point point);
 Point moveLeft(Point point);
 Point moveRight(Point point);
