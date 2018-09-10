@@ -2,12 +2,20 @@
 
 GameState initialize(int nlines, int ncolumns){
     GameState state;
-
+    state.nlines = nlines;
+    state.ncolumns = ncolumns;
+    state.activePoints = new Point[nlines*ncolumns];
+    state.qtdActivePoints = 0;
     return state;
 }
 
 bool isValidState(GameState state){
-    return false;
+  for(int i = 0; i < 4; i++){
+    for(int k = 0; k < qtdActivePoints; k++){
+      if(isEqual(state.nextTetromino.points[i], state.activePoints[k])) return false;
+    }
+  }
+    return true;
 }
 
 GameState moveDown(GameState state){
