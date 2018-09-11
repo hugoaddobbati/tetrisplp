@@ -35,22 +35,50 @@ GameState moveDown(GameState state){
 
 GameState moveLeft(GameState state){
     GameState nextState;
-
+    nextState.nlines = state.nlines;
+    nextState.ncolumns = state.ncolumns;
+    for(int i = 0; i < state.nlines * state.ncolumns ; i++){
+        nextState.activePoints[i] = state.activePoints[i];
+    }
+    nextState.qtdActivePoints = state.qtdActivePoints;
+    nextState.currentTetromino = moveLeft(state.currentTetromino);
+    nextState.nextTetromino = copyTetromino(state.nextTetromino);
     return nextState;
 }
 GameState moveRight(GameState state){
     GameState nextState;
-
+    nextState.nlines = state.nlines;
+    nextState.ncolumns = state.ncolumns;
+    for(int i = 0; i < state.nlines * state.ncolumns ; i++){
+        nextState.activePoints[i] = state.activePoints[i];
+    }
+    nextState.qtdActivePoints = state.qtdActivePoints;
+    nextState.currentTetromino = moveRight(state.currentTetromino);
+    nextState.nextTetromino = copyTetromino(state.nextTetromino);
     return nextState;
 }
 GameState rotateClockwise(GameState state){
     GameState nextState;
-
+    nextState.nlines = state.nlines;
+    nextState.ncolumns = state.ncolumns;
+    for(int i = 0; i < state.nlines * state.ncolumns ; i++){
+        nextState.activePoints[i] = state.activePoints[i];
+    }
+    nextState.qtdActivePoints = state.qtdActivePoints;
+    nextState.currentTetromino = rotateClockwise(state.currentTetromino);
+    nextState.nextTetromino = copyTetromino(state.nextTetromino);
     return nextState;
 }
 GameState rotateAnticlockwise(GameState state){
     GameState nextState;
-
+    nextState.nlines = state.nlines;
+    nextState.ncolumns = state.ncolumns;
+    for(int i = 0; i < state.nlines * state.ncolumns ; i++){
+        nextState.activePoints[i] = state.activePoints[i];
+    }
+    nextState.qtdActivePoints = state.qtdActivePoints;
+    nextState.currentTetromino = rotateAnticlockwise(state.currentTetromino);
+    nextState.nextTetromino = copyTetromino(state.nextTetromino);
     return nextState;
 }
 
