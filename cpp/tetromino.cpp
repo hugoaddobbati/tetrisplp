@@ -59,6 +59,15 @@ Tetromino rotateAnticlockwise(Tetromino tetromino){
   return nextTetromino;
 }
 
+Tetromino copyTetromino(Tetromino tetromino){
+  Tetromino newTetromino;
+  Point newPoints[4];
+  for(int i = 0; i < 4; i++){
+    newTetromino.points[i] = tetromino.points[i];
+  }
+  return newTetromino;
+}
+
 Tetromino getRandomTetromino(){
     Tetromino tetromino;
     

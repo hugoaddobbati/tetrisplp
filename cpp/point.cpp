@@ -40,7 +40,7 @@ Point rotateClockwise(Point center, Point point){
     return nextPoint;
 }
 
-Point rotateAnticlockwise(Point center, Point point){
+Point rotateCounterclockwise(Point center, Point point){
     //x,y -> -y,x
     int newX = point.x - center.x;
     int newY = point.y - center.y;
