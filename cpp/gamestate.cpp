@@ -45,6 +45,7 @@ GameState moveLeft(GameState state){
     nextState.nextTetromino = copyTetromino(state.nextTetromino);
     return nextState;
 }
+
 GameState moveRight(GameState state){
     GameState nextState;
     nextState.nlines = state.nlines;
@@ -57,6 +58,7 @@ GameState moveRight(GameState state){
     nextState.nextTetromino = copyTetromino(state.nextTetromino);
     return nextState;
 }
+
 GameState rotateClockwise(GameState state){
     GameState nextState;
     nextState.nlines = state.nlines;
@@ -69,6 +71,7 @@ GameState rotateClockwise(GameState state){
     nextState.nextTetromino = copyTetromino(state.nextTetromino);
     return nextState;
 }
+
 GameState rotateAnticlockwise(GameState state){
     GameState nextState;
     nextState.nlines = state.nlines;
@@ -83,11 +86,25 @@ GameState rotateAnticlockwise(GameState state){
 }
 
 bool isOver(GameState state){
+
     return true;
 }
 
 GameState simplify(GameState state){
-    GameState nextState;
+    int count[state.nlines];
+    for(int i = 0; i < state.nlines; i++){
+        count[i] = 0;
+    }
+    for(int i = 0; i < qtdActivePoints; i++){
+        count[activePoints[i].x]++;
+    }
+    for(int i = 0; i < state.nlines; i++){
+        if(count[i] == state.ncolumns) state = simplifyLine(state, i);
+    }
+    return state;
+}
 
+GameState simplifyLine(GameState state, int line){
+    GameState nextState;
     return nextState;
 }
