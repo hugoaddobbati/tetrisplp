@@ -1,7 +1,6 @@
 #include "tetromino.h"
 
 void setupTetrominos(){
-asd
 }
 
 Tetromino moveDown(Tetromino tetromino){
@@ -39,7 +38,6 @@ Tetromino rotateClockwise(Tetromino tetromino){
 
 Tetromino rotateAnticlockwise(Tetromino tetromino){
   Tetromino nextTetromino;
-  Point newPoints[4];
   nextTetromino.points[0] = tetromino.points[0];
   for(int i = 1; i < 4;i++){
     nextTetromino.points[i] = point.rotateAnticlockwise(tetromino.points[0], tetromino.points[i]);
