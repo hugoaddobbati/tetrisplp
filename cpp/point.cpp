@@ -9,6 +9,7 @@ Point moveDown(Point point){
     Point nextPoint;
     nextPoint.x = point.x;
     nextPoint.y = point.y + 1;
+    nextPoint.color = point.color;
     return nextPoint;
 }
 
@@ -16,6 +17,7 @@ Point moveLeft(Point point){
     Point nextPoint;
     nextPoint.x = point.x-1;
     nextPoint.y = point.y;
+    nextPoint.color = point.color;
     return nextPoint;
 }
 
@@ -23,7 +25,7 @@ Point moveRight(Point point){
     Point nextPoint;
     nextPoint.x = point.x+1;
     nextPoint.y = point.y;
-
+    nextPoint.color = point.color;
     return nextPoint;
 }
 

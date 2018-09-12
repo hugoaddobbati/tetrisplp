@@ -54,7 +54,7 @@ Tetromino copyTetromino(Tetromino tetromino){
 }
 
 Tetromino getRandomTetromino(){
-    Tetromino tetromino;
-    
+    Tetromino tetromino;   
     return tetromino;
 }
+

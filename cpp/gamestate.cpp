@@ -6,6 +6,8 @@ GameState initialize(int nlines, int ncolumns){
     state.ncolumns = ncolumns;
     state.activePoints = new Point[nlines*ncolumns];
     state.qtdActivePoints = 0;
+    state.currentTetromino = getRandomTetromino();
+    state.nextTetromino = getRandomTetromino();
     return state;
 }
 
@@ -91,20 +93,6 @@ bool isOver(GameState state){
 }
 
 GameState simplify(GameState state){
-    int count[state.nlines];
-    for(int i = 0; i < state.nlines; i++){
-        count[i] = 0;
-    }
-    for(int i = 0; i < qtdActivePoints; i++){
-        count[activePoints[i].x]++;
-    }
-    for(int i = 0; i < state.nlines; i++){
-        if(count[i] == state.ncolumns) state = simplifyLine(state, i);
-    }
-    return state;
-}
-
-GameState simplifyLine(GameState state, int line){
-    GameState nextState;
-    return nextState;
+    GameState newState;
+    return newState;
 }
