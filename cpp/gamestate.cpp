@@ -26,8 +26,9 @@ GameState moveDown(GameState state){
     GameState nextState;
     nextState.nlines = state.nlines;
     nextState.ncolumns = state.ncolumns;
-    for(int i = 0; i < state.nlines * state.ncolumns ; i++){
-        nextState.activePoints[i] = state.activePoints[i];
+    cpyActGameState.activePoints = new Point[nlines*ncolumns];
+    for(int i = 0; i < qtdActivePoints; i++){
+        cpyActGameState.activePoints[i] = state.activePoints[i];
     }
     nextState.qtdActivePoints = state.qtdActivePoints;
     nextState.currentTetromino = moveDown(state.currentTetromino);
@@ -39,8 +40,9 @@ GameState moveLeft(GameState state){
     GameState nextState;
     nextState.nlines = state.nlines;
     nextState.ncolumns = state.ncolumns;
-    for(int i = 0; i < state.nlines * state.ncolumns ; i++){
-        nextState.activePoints[i] = state.activePoints[i];
+    cpyActGameState.activePoints = new Point[nlines*ncolumns];
+    for(int i = 0; i < qtdActivePoints; i++){
+        cpyActGameState.activePoints[i] = state.activePoints[i];
     }
     nextState.qtdActivePoints = state.qtdActivePoints;
     nextState.currentTetromino = moveLeft(state.currentTetromino);
@@ -52,8 +54,9 @@ GameState moveRight(GameState state){
     GameState nextState;
     nextState.nlines = state.nlines;
     nextState.ncolumns = state.ncolumns;
-    for(int i = 0; i < state.nlines * state.ncolumns ; i++){
-        nextState.activePoints[i] = state.activePoints[i];
+    cpyActGameState.activePoints = new Point[nlines*ncolumns];
+    for(int i = 0; i < qtdActivePoints; i++){
+        cpyActGameState.activePoints[i] = state.activePoints[i];
     }
     nextState.qtdActivePoints = state.qtdActivePoints;
     nextState.currentTetromino = moveRight(state.currentTetromino);
@@ -61,25 +64,29 @@ GameState moveRight(GameState state){
     return nextState;
 }
 
+
 GameState rotateClockwise(GameState state){
     GameState nextState;
     nextState.nlines = state.nlines;
     nextState.ncolumns = state.ncolumns;
-    for(int i = 0; i < state.nlines * state.ncolumns ; i++){
-        nextState.activePoints[i] = state.activePoints[i];
+    cpyActGameState.activePoints = new Point[nlines*ncolumns];
+    for(int i = 0; i < qtdActivePoints; i++){
+        cpyActGameState.activePoints[i] = state.activePoints[i];
     }
     nextState.qtdActivePoints = state.qtdActivePoints;
     nextState.currentTetromino = rotateClockwise(state.currentTetromino);
     nextState.nextTetromino = copyTetromino(state.nextTetromino);
     return nextState;
 }
+}
 
 GameState rotateAnticlockwise(GameState state){
     GameState nextState;
     nextState.nlines = state.nlines;
     nextState.ncolumns = state.ncolumns;
-    for(int i = 0; i < state.nlines * state.ncolumns ; i++){
-        nextState.activePoints[i] = state.activePoints[i];
+    cpyActGameState.activePoints = new Point[nlines*ncolumns];
+    for(int i = 0; i < qtdActivePoints; i++){
+        cpyActGameState.activePoints[i] = state.activePoints[i];
     }
     nextState.qtdActivePoints = state.qtdActivePoints;
     nextState.currentTetromino = rotateAnticlockwise(state.currentTetromino);
@@ -87,9 +94,38 @@ GameState rotateAnticlockwise(GameState state){
     return nextState;
 }
 
-bool isOver(GameState state){
 
-    return true;
+GameState copyGameState(GameState state){
+    GameState cpyActGameState;
+    cpyActGameState.nlines = state.nlines;
+    cpyActGameState.ncolumns = state.ncolumns;
+    cpyActGameState.qtdActivePoints = state.qtdActivePoints;
+    cpyActGameState.currentTetromino = copyTetromino(state.currentTetromino);
+    cpyActGameState.nextTetromino = copyTetromino(state.nextTetromino);
+    cpyActGameState.activePoints = new Point[nlines*ncolumns];
+    for(int i = 0; i < qtdActivePoints; i++){
+        cpyActGameState.activePoints[i] = state.activePoints[i];
+    }
+    return cpyActGameState;
+}
+
+bool isOver(GameState state){
+    bool isover = false;
+    bool running = 1;
+    for(int i = 0; i < 4 && running; i++){
+        if(state.currentTetromino.points[i].y == state.nlines){
+            isover = true;
+            break;
+        }
+        for(int j = 0; j < state.qtdActivePoints; j++){
+            if(state.currentTetromino.points[i].y == state.activePoints[j].y){
+                isover = true;
+                running = false;
+                break;
+            }
+        }
+    }
+    return isover;
 }
 
 GameState simplify(GameState state){
