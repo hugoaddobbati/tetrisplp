@@ -1,5 +1,5 @@
 #include "point.h"
-
+#pragma once
 bool isEqual(Point pointA, Point pointB){
     if(pointA.x != pointB.x || pointA.y != pointB.y) return false;
     return true;
@@ -42,7 +42,7 @@ Point rotateClockwise(Point center, Point point){
     return nextPoint;
 }
 
-Point rotateCounterclockwise(Point center, Point point){
+Point rotateAnticlockwise(Point center, Point point){
     //x,y -> -y,x
     int newX = point.x - center.x;
     int newY = point.y - center.y;
@@ -52,7 +52,7 @@ Point rotateCounterclockwise(Point center, Point point){
     nextPoint.x += center.x;
     nextPoint.y += center.y;
     nextPoint.color = point.color;
-    Point nextPoint;
+
 
     return nextPoint;
 }
