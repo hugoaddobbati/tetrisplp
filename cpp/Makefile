@@ -3,8 +3,8 @@ CFLAGS = -std=c++14
 LIBS = -lncurses
 
 DEPS = *.h
-SRCS = colors.cpp gamestate.cpp gui.cpp menu.cpp point.cpp tetris.cpp tetromino.cpp main.cpp
-OBJS = colors.o gamestate.o gui.o menu.o point.o tetris.o tetromino.o main.o
+SRCS = colors.cpp tetromino.cpp gamestate.cpp gui.cpp menu.cpp point.cpp tetris.cpp main.cpp
+OBJS = colors.o tetromino.o gamestate.o gui.o menu.o point.o tetris.o main.o
 
 all: run
 
