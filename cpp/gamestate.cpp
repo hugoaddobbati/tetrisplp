@@ -138,6 +138,27 @@ bool isOver(GameState state){
 }
 
 GameState simplify(GameState state, int &score){
-    GameState newState;
+    GameState newState = copyGameState(state);
+    int count[state.nlines];
+    for(int i = 0; i < state.nlines; i++) count[i] = 0;
+    for(int i = 0; i < state.qtdActivePoints; i++){
+      count[state.activePoints[i].y]++;
+    }
+    for(int i = 0; i < state.nlines; i++){
+      if(count[i] == state.ncolumns){
+        int j = 0;
+        for(int k = 0; k < state.qtdActivePoints; k++){
+          if(state.activePoints[k].y < i){
+            state.activePoints[k].y++;
+            newState.activePoints[j++] = state.activePoints[k];
+          }
+          else if(state.activePoints[k].y > i){
+            newState.activePoints[j++] = state.activePoints[k];
+          }
+        }
+        state.qtdActivePoints -= state.ncolumns;
+      }
+    }
+    newState.qtdActivePoints = state.qtdActivePoints;
     return newState;
 }

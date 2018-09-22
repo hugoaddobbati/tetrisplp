@@ -24,8 +24,10 @@ void play(){
       if(isOver(state)){
         state = backup;
         state = appendPiece(state);
+        state = simplify(state,score);
         state.currentTetromino = copyTetro(state.nextTetromino);
         state.nextTetromino = getRandomTetromino();
+        if(!isValidState(state)) break;
       }
     }
 
@@ -46,16 +48,19 @@ void play(){
       if(isOver(state)){
         state = backup;
         state = appendPiece(state);
+        state = simplify(state,score);
         state.currentTetromino = copyTetro(state.nextTetromino);
         state.nextTetromino = getRandomTetromino();
+        if(!isValidState(state)) break;
       }
 
     }
     while ((action = getch()) != -1);
-    Sleep(500);
+    Sleep(100);
 
 
   }
+  endGame();
 }
 
 void endGame(){
