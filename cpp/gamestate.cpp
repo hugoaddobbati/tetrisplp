@@ -17,8 +17,8 @@ bool isValidState(GameState state){
         for(int k = 0; k < state.qtdActivePoints; k++){
             if(isEqual(state.currentTetromino.points[i], state.activePoints[k])) return false;
         }
-        if(state.currentTetromino.points[i].x < 0 || state.currentTetromino.points[i].x >= state.ncolumns) return false;
-        if(state.currentTetromino.points[i].y < 0 || state.currentTetromino.points[i].x >= state.nlines) return false;
+        if((state.currentTetromino.points[i].x) < 0 || (state.currentTetromino.points[i].x >= state.ncolumns)) return false;
+        if((state.currentTetromino.points[i].y < 0) || (state.currentTetromino.points[i].y >= state.nlines)) return false;
     }
     return true;
 }
@@ -110,6 +110,14 @@ GameState copyGameState(GameState state){
     return cpyActGameState;
 }
 
+GameState appendPiece(GameState state){
+  GameState newState = copyGameState(state);
+  for(int i = 0; i < 4; i++){
+    newState.activePoints[newState.qtdActivePoints++] = state.currentTetromino.points[i];
+  }
+  return newState;
+}
+
 bool isOver(GameState state){
     bool isover = false;
     bool running = 1;
@@ -119,7 +127,7 @@ bool isOver(GameState state){
             break;
         }
         for(int j = 0; j < state.qtdActivePoints; j++){
-            if(state.currentTetromino.points[i].y == state.activePoints[j].y){
+            if(state.currentTetromino.points[i].y == state.activePoints[j].y && state.currentTetromino.points[i].x == state.activePoints[j].x){
                 isover = true;
                 running = false;
                 break;
@@ -129,7 +137,7 @@ bool isOver(GameState state){
     return isover;
 }
 
-GameState simplify(GameState state){
+GameState simplify(GameState state, int &score){
     GameState newState;
     return newState;
 }

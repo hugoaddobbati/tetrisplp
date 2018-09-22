@@ -15,7 +15,7 @@ GameState generateIntialState();
 void showGameState(GameState state);
 
 char getChar();
-
+void showScore(int score);
 /**
  * Revert the terminal to his normal state
  * */
