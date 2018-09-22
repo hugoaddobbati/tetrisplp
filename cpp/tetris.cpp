@@ -12,10 +12,10 @@ void play(){
   GameState backup;
   bool playing = true;
   int score = 0;
+  int powerUpBars = 0;
   char action;
   while(playing){
-    showGameState(state);
-    showScore(score);
+    showGameState(state,score, powerUpBars);
     action = getch();
     backup = copyGameState(state);
 
@@ -24,7 +24,7 @@ void play(){
       if(isOver(state)){
         state = backup;
         state = appendPiece(state);
-        state = simplify(state,score);
+        state = simplify(state,score,powerUpBars);
         state.currentTetromino = copyTetro(state.nextTetromino);
         state.nextTetromino = getRandomTetromino();
         if(!isValidState(state)) break;
@@ -43,12 +43,15 @@ void play(){
       state = moveLeft(state);
       if(!isValidState(state)) state = backup;
     }
+    else if(action == 'p' && powerUpBars >= 5){//POWER UP
+
+    }
     else{//DEFAULT MOVE DOWN
       state = moveDown(state);
       if(isOver(state)){
         state = backup;
         state = appendPiece(state);
-        state = simplify(state,score);
+        state = simplify(state,score,powerUpBars);
         state.currentTetromino = copyTetro(state.nextTetromino);
         state.nextTetromino = getRandomTetromino();
         if(!isValidState(state)) break;

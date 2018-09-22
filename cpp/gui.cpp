@@ -1,4 +1,6 @@
 #include "gui.h"
+#include <string>
+#include <sstream>
 #pragma once
 
 void drawBackground(){
@@ -13,9 +15,6 @@ void drawBackground(){
   attroff(COLOR_PAIR(EMPTY));
 }
 
-void showScore(int score){
-
-}
 
 void startUp(){
   WINDOW * win = initscr();
@@ -61,9 +60,61 @@ void drawPoints(GameState state){
   }
 }
 
-void showGameState(GameState state){
+void drawExtraInfo(GameState state, int score, int powerUpBar){
+  int xOFFSET = 40;
+  int yOFFSET = 30;
+  std::string s = std::to_string(score);
+  char const *scoree = s.c_str();
+  char scoreMsg[] = "SCORE";
+  char nextmsg[] = "NEXT TETROMINO";
+  char powerUp[] = "POWER-UP-BAR";
+  mvprintw(yOFFSET-15, 16+xOFFSET, scoree);
+  mvprintw(yOFFSET-17 , 16+xOFFSET, scoreMsg);
+  mvprintw(yOFFSET-10, 16+xOFFSET, powerUp);
+  attron(COLOR_PAIR(BLUE_PAIR));
+  for(int i = 0; i < powerUpBar; i++){
+    mvaddch(yOFFSET-9, 16+xOFFSET+i*2, ' ');
+    mvaddch(yOFFSET-9, 16+xOFFSET+i*2+1, ' ');
+  }
+  attroff(COLOR_PAIR(BLUE_PAIR));
+  attron(COLOR_PAIR(YELLOW_PAIR));
+  for(int i = powerUpBar; i <= 5 ; i++){
+    mvaddch(yOFFSET-9, 16+xOFFSET+i*2, ' ');
+    mvaddch(yOFFSET-9, 16+xOFFSET+i*2+1, ' ');
+  }
+  attroff(COLOR_PAIR(YELLOW_PAIR));
+  mvprintw(yOFFSET-1, 15+xOFFSET, nextmsg);
+  for(int i = 0; i < 4; i++){
+    attron(COLOR_PAIR(EMPTY));
+    mvaddch(2*state.currentTetromino.points[i].y+1+yOFFSET, 4*state.currentTetromino.points[i].x+1+xOFFSET, ' ');
+    mvaddch(2*state.currentTetromino.points[i].y+1+yOFFSET, 4*state.currentTetromino.points[i].x+2+xOFFSET, ' ');
+    mvaddch(2*state.currentTetromino.points[i].y+2+yOFFSET, 4*state.currentTetromino.points[i].x+1+xOFFSET, ' ');
+    mvaddch(2*state.currentTetromino.points[i].y+2+yOFFSET, 4*state.currentTetromino.points[i].x+2+xOFFSET, ' ');
+    mvaddch(2*state.currentTetromino.points[i].y+1+yOFFSET, 4*state.currentTetromino.points[i].x+3+xOFFSET, ' ');
+    mvaddch(2*state.currentTetromino.points[i].y+1+yOFFSET, 4*state.currentTetromino.points[i].x+4+xOFFSET, ' ');
+    mvaddch(2*state.currentTetromino.points[i].y+2+yOFFSET, 4*state.currentTetromino.points[i].x+3+xOFFSET, ' ');
+    mvaddch(2*state.currentTetromino.points[i].y+2+yOFFSET, 4*state.currentTetromino.points[i].x+4+xOFFSET, ' ');
+    attroff(COLOR_PAIR(EMPTY));
+  }
+  for(int i = 0; i < 4; i++){
+    attron(COLOR_PAIR(state.nextTetromino.points[i].color));
+    mvaddch(2*state.nextTetromino.points[i].y+1+yOFFSET, 4*state.nextTetromino.points[i].x+1+xOFFSET, ' ');
+    mvaddch(2*state.nextTetromino.points[i].y+1+yOFFSET, 4*state.nextTetromino.points[i].x+2+xOFFSET, ' ');
+    mvaddch(2*state.nextTetromino.points[i].y+2+yOFFSET, 4*state.nextTetromino.points[i].x+1+xOFFSET, ' ');
+    mvaddch(2*state.nextTetromino.points[i].y+2+yOFFSET, 4*state.nextTetromino.points[i].x+2+xOFFSET, ' ');
+    mvaddch(2*state.nextTetromino.points[i].y+1+yOFFSET, 4*state.nextTetromino.points[i].x+3+xOFFSET, ' ');
+    mvaddch(2*state.nextTetromino.points[i].y+1+yOFFSET, 4*state.nextTetromino.points[i].x+4+xOFFSET, ' ');
+    mvaddch(2*state.nextTetromino.points[i].y+2+yOFFSET, 4*state.nextTetromino.points[i].x+3+xOFFSET, ' ');
+    mvaddch(2*state.nextTetromino.points[i].y+2+yOFFSET, 4*state.nextTetromino.points[i].x+4+xOFFSET, ' ');
+    attroff(COLOR_PAIR(state.nextTetromino.points[i].color));
+  }
+
+}
+
+void showGameState(GameState state, int score, int powerUpBar){
   drawBackground();
   drawPoints(state);
+  drawExtraInfo(state, score, powerUpBar);
   mvgetch(100,100);
   refresh();
 }

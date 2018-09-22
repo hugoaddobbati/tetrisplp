@@ -137,8 +137,9 @@ bool isOver(GameState state){
     return isover;
 }
 
-GameState simplify(GameState state, int &score){
+GameState simplify(GameState state, int &score, int & powerUpBars){
     GameState newState = copyGameState(state);
+    int lines = 0;
     int count[state.nlines];
     for(int i = 0; i < state.nlines; i++) count[i] = 0;
     for(int i = 0; i < state.qtdActivePoints; i++){
@@ -146,6 +147,7 @@ GameState simplify(GameState state, int &score){
     }
     for(int i = 0; i < state.nlines; i++){
       if(count[i] == state.ncolumns){
+        lines += 1;
         int j = 0;
         for(int k = 0; k < state.qtdActivePoints; k++){
           if(state.activePoints[k].y < i){
@@ -159,6 +161,12 @@ GameState simplify(GameState state, int &score){
         state.qtdActivePoints -= state.ncolumns;
       }
     }
+    if(lines == 1) score += 50;
+    if(lines == 2) score += 110;
+    if(lines == 3) score += 180;
+    if(lines == 4) score += 300;
+    powerUpBars += lines;
+    if(powerUpBars > 5)powerUpBars = 5;
     newState.qtdActivePoints = state.qtdActivePoints;
     return newState;
 }
