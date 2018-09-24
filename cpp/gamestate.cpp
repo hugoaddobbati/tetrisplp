@@ -137,6 +137,28 @@ bool isOver(GameState state){
     return isover;
 }
 
+GameState simplifyLine(GameState state, int line){
+    int k = 0;
+    Point * newPoints = new Point[state.nlines*state.ncolumns];
+    int qtdActiveTemp = 0;
+    for(int j = 0; j < state.qtdActivePoints; j++){
+      if(state.activePoints[j].y > line){
+        newPoints[qtdActiveTemp] = state.activePoints[j];
+        qtdActiveTemp++;
+       }
+      else if(state.activePoints[j].y < line){
+        newPoints[qtdActiveTemp] = state.activePoints[j];
+        newPoints[qtdActiveTemp].y += 1;
+        qtdActiveTemp++;
+      }
+    }
+    for(int m = 0; m < qtdActiveTemp; m++){
+      state.activePoints[m] = newPoints[m];
+    }
+    state.qtdActivePoints = qtdActiveTemp;
+    return state;
+}
+
 GameState simplify(GameState state, int &score, int & powerUpBars){
     GameState newState = copyGameState(state);
     int lines = 0;
@@ -147,26 +169,32 @@ GameState simplify(GameState state, int &score, int & powerUpBars){
     }
     for(int i = 0; i < state.nlines; i++){
       if(count[i] == state.ncolumns){
+        state = simplifyLine(state, i);
         lines += 1;
-        int j = 0;
-        for(int k = 0; k < state.qtdActivePoints; k++){
-          if(state.activePoints[k].y < i){
-            state.activePoints[k].y++;
-            newState.activePoints[j++] = state.activePoints[k];
-          }
-          else if(state.activePoints[k].y > i){
-            newState.activePoints[j++] = state.activePoints[k];
-          }
-        }
-        state.qtdActivePoints -= state.ncolumns;
       }
     }
+
+    // for(int i = 0; i < state.nlines; i++){
+    //   if(count[i] == state.ncolumns){
+    //     lines += 1;
+    //     int j = 0;
+    //     for(int k = 0; k < state.qtdActivePoints; k++){
+    //       if(state.activePoints[k].y < i){
+    //         state.activePoints[k].y++;
+    //         newState.activePoints[j++] = state.activePoints[k];
+    //       }
+    //       else if(state.activePoints[k].y > i){
+    //         newState.activePoints[j++] = state.activePoints[k];
+    //       }
+    //     }
+    //     state.qtdActivePoints -= state.ncolumns;
+    //   }
+    // }
     if(lines == 1) score += 50;
     if(lines == 2) score += 110;
     if(lines == 3) score += 180;
     if(lines == 4) score += 300;
     powerUpBars += lines;
     if(powerUpBars > 5)powerUpBars = 5;
-    newState.qtdActivePoints = state.qtdActivePoints;
-    return newState;
+    return state;
 }

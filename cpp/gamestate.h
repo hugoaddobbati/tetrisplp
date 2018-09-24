@@ -44,3 +44,4 @@ bool isOver(GameState state);
  * Should remove complete lines and update score
  * */
 GameState simplify(GameState state, int& score,int& powerUpBars);
+GameState simplifyLine(GameState state, int line);

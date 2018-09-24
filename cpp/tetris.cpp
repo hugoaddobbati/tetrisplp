@@ -44,7 +44,10 @@ void play(){
       if(!isValidState(state)) state = backup;
     }
     else if(action == 'p' && powerUpBars >= 5){//POWER UP
-
+      state.currentTetromino = copyTetro(state.nextTetromino);
+      state.nextTetromino = getRandomTetromino();
+      powerUpBars = 0;
+      if(!isValidState(state)) break;
     }
     else{//DEFAULT MOVE DOWN
       state = moveDown(state);
@@ -59,7 +62,7 @@ void play(){
 
     }
     while ((action = getch()) != -1);
-    Sleep(100);
+    Sleep(150);
 
 
   }

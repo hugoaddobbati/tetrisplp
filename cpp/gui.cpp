@@ -23,7 +23,7 @@ void startUp(){
   noecho();
   nodelay(win,true);
   setupColors();
-  drawBackground();
+  srand(time(NULL));
 
 }
 
@@ -67,7 +67,7 @@ void drawExtraInfo(GameState state, int score, int powerUpBar){
   char const *scoree = s.c_str();
   char scoreMsg[] = "SCORE";
   char nextmsg[] = "NEXT TETROMINO";
-  char powerUp[] = "POWER-UP-BAR";
+  char powerUp[] = "POWERUPBAR";
   mvprintw(yOFFSET-15, 16+xOFFSET, scoree);
   mvprintw(yOFFSET-17 , 16+xOFFSET, scoreMsg);
   mvprintw(yOFFSET-10, 16+xOFFSET, powerUp);
@@ -78,7 +78,7 @@ void drawExtraInfo(GameState state, int score, int powerUpBar){
   }
   attroff(COLOR_PAIR(BLUE_PAIR));
   attron(COLOR_PAIR(YELLOW_PAIR));
-  for(int i = powerUpBar; i <= 5 ; i++){
+  for(int i = powerUpBar; i <= 4 ; i++){
     mvaddch(yOFFSET-9, 16+xOFFSET+i*2, ' ');
     mvaddch(yOFFSET-9, 16+xOFFSET+i*2+1, ' ');
   }

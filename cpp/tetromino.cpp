@@ -57,7 +57,6 @@ Tetromino copyTetro(Tetromino tetromino){
 
 Tetromino getRandomTetromino(){
     Tetromino tetromino;
-    srand(time(NULL));
     int tetrominoType = rand()%7 + 1;
 
     if(tetrominoType == T){
