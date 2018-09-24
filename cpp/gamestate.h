@@ -15,8 +15,9 @@ struct GameState {
 /**
  * Generate a empty game knowing the number of lines and columns
  * */
+GameState appendPiece(GameState state);
 GameState initialize(int nlines, int ncolumns);
-
+GameState copyGameState(GameState state);
 /**
  * Should say if in the current state there are no overlap between
  * active points and current Tetromino and if the points are
@@ -42,4 +43,5 @@ bool isOver(GameState state);
 /**
  * Should remove complete lines and update score
  * */
-GameState simplify(GameState state);
+GameState simplify(GameState state, int& score,int& powerUpBars);
+GameState simplifyLine(GameState state, int line);
