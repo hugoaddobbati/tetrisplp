@@ -1,7 +1,13 @@
 #include "gui.h"
 #include <string>
 #include <sstream>
+#include <unistd.h>
 #pragma once
+
+WINDOW * win;
+
+
+
 
 void drawBackground(){
   attron(COLOR_PAIR(EMPTY));
@@ -15,13 +21,37 @@ void drawBackground(){
   attroff(COLOR_PAIR(EMPTY));
 }
 
+void clearScreen(){
+  attron(COLOR_PAIR(EMPTY));
+  for(int i = 0; i < LINES; i++){
+    for(int j = 0; j < COLS; j++){
+      mvaddch(i, j, ' ');
+    }
+  }
+  attroff(COLOR_PAIR(EMPTY));
+}
+
+void disableDelay(){
+  nodelay(win, true);
+}
+void enableDelay(){
+  nodelay(win, false);
+}
+
+void showMenuOptions(){
+  clearScreen();
+  for(int line = 1; line < 9; line++){
+    mvprintw(line, 1, menuText[line-1]);
+  }
+  refresh();
+}
 
 void startUp(){
-  WINDOW * win = initscr();
+  win = initscr();
   cbreak();
   keypad(stdscr, TRUE);
   noecho();
-  nodelay(win,true);
+  disableDelay();
   setupColors();
   srand(time(NULL));
 
@@ -59,6 +89,7 @@ void drawPoints(GameState state){
     attroff(COLOR_PAIR(state.currentTetromino.points[i].color));
   }
 }
+
 
 void drawExtraInfo(GameState state, int score, int powerUpBar){
   int xOFFSET = 40;

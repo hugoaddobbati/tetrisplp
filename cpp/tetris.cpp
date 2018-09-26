@@ -1,9 +1,8 @@
 #include "tetris.h"
-#include <windows.h>
+#include <unistd.h>
 #pragma once
 
 void start(){
-    startUp();
     play();
 }
 
@@ -19,16 +18,20 @@ void play(){
     action = getch();
     backup = copyGameState(state);
 
-    if(action == 's'){//MOVE DOWN
+    if(action == 's'){//MOVE
+      while(1){
+      backup = copyGameState(state);
       state = moveDown(state);
-      if(isOver(state)){
-        state = backup;
-        state = appendPiece(state);
-        state = simplify(state,score,powerUpBars);
-        state.currentTetromino = copyTetro(state.nextTetromino);
-        state.nextTetromino = getRandomTetromino();
-        if(!isValidState(state)) break;
+      if(!isValidState(state))break;
+
       }
+      state = backup;
+      state = appendPiece(state);
+      state = simplify(state,score,powerUpBars);
+      state.currentTetromino = copyTetro(state.nextTetromino);
+      state.nextTetromino = getRandomTetromino();
+
+
     }
 
     else if(action == 'w'){//ROTATE CLOCKWISE
@@ -62,13 +65,11 @@ void play(){
 
     }
     while ((action = getch()) != -1);
-    Sleep(150);
+    usleep(150000);
 
 
   }
-  endGame();
 }
 
 void endGame(){
-  endwin();
 }
