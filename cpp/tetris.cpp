@@ -1,5 +1,6 @@
 #include "tetris.h"
 #include <unistd.h>
+#include <windows.h>
 #pragma once
 
 void start(){
@@ -13,23 +14,27 @@ void play(){
   int score = 0;
   int powerUpBars = 0;
   char action;
+  bool notPressed = true;
+  int counter = 0;
+  showGameState(state,score, powerUpBars);
   while(playing){
-    showGameState(state,score, powerUpBars);
+    counter += 1;
     action = getch();
     backup = copyGameState(state);
 
     if(action == 's'){//MOVE
+      counter = 0;
       while(1){
-      backup = copyGameState(state);
-      state = moveDown(state);
-      if(!isValidState(state))break;
-
+        backup = copyGameState(state);
+        state = moveDown(state);
+        if(!isValidState(state))break;
       }
       state = backup;
       state = appendPiece(state);
       state = simplify(state,score,powerUpBars);
       state.currentTetromino = copyTetro(state.nextTetromino);
       state.nextTetromino = getRandomTetromino();
+      showGameState(state,score, powerUpBars);
 
 
     }
@@ -37,22 +42,28 @@ void play(){
     else if(action == 'w'){//ROTATE CLOCKWISE
       state = rotateClockwise(state);
       if(!isValidState(state)) state = backup;
+      showGameState(state,score, powerUpBars);
     }
     else if(action == 'd'){//MOVE RIGHT
       state = moveRight(state);
       if(!isValidState(state)) state = backup;
+      showGameState(state,score, powerUpBars);
     }
     else if(action == 'a'){//MOVE LEFT
       state = moveLeft(state);
       if(!isValidState(state)) state = backup;
+      showGameState(state,score, powerUpBars);
     }
     else if(action == 'p' && powerUpBars >= 5){//POWER UP
       state.currentTetromino = copyTetro(state.nextTetromino);
       state.nextTetromino = getRandomTetromino();
       powerUpBars = 0;
       if(!isValidState(state)) break;
+      showGameState(state,score, powerUpBars);
+
     }
-    else{//DEFAULT MOVE DOWN
+    else if(counter >= 30){
+      counter = 0;
       state = moveDown(state);
       if(isOver(state)){
         state = backup;
@@ -61,11 +72,13 @@ void play(){
         state.currentTetromino = copyTetro(state.nextTetromino);
         state.nextTetromino = getRandomTetromino();
         if(!isValidState(state)) break;
-      }
 
+      }
+      showGameState(state,score, powerUpBars);
     }
+
     while ((action = getch()) != -1);
-    usleep(150000);
+    Sleep(5);
 
 
   }
