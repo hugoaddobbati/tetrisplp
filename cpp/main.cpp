@@ -1,10 +1,8 @@
-#include "tetris.h"
-#include <iostream>
-using namespace std;
+#include "menu.h"
+
 
 int main(){
-    cout << "It works" << endl;
-    start();
+    generateStartupFrames();
     return 0;
 
 }
