@@ -1,15 +1,18 @@
 #include "menu.h"
 #include "tetris.h"
 #include <unistd.h>
+#include <windows.h>
 
 #pragma once
 void generateStartupFrames(){
   startUp();
   char c;
   bool gameActive = 1;
+  bool showText = 1;
   while(gameActive){
     c = getch();
     if(c == 's'){
+      clearScreen();
       start();
     }
     else if(c == 'q'){
@@ -17,9 +20,10 @@ void generateStartupFrames(){
     }
     else{
       clearScreen();
-      showMenuOptions();
+      showMenuOptions(showText);
+      showText = !showText;
     }
-    usleep(150000);
+    Sleep(500);
   }
   endwin();
 }

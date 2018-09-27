@@ -38,11 +38,17 @@ void enableDelay(){
   nodelay(win, false);
 }
 
-void showMenuOptions(){
+void showMenuOptions(bool showText){
   clearScreen();
-  for(int line = 1; line < 9; line++){
+  for(int line = 1; line < 23; line++){
     mvprintw(line, 1, menuText[line-1]);
   }
+  if(showText){
+    for(int i = 23; i < 29; i++){
+      mvprintw(i +1,1, startText[i-23]);
+    }
+  }
+  mvprintw(500,500," ");
   refresh();
 }
 

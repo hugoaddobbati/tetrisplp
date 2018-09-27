@@ -78,7 +78,7 @@ void play(){
     }
 
     while ((action = getch()) != -1);
-    usleep(5000);
+    Sleep(5);
 
 
   }
