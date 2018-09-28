@@ -4,6 +4,8 @@
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>
 #include <math.h>
+#include <chrono>
+#include <random>
 
 Tetromino moveDown(Tetromino tetromino){
     Tetromino nextTetromino;
@@ -57,7 +59,9 @@ Tetromino copyTetro(Tetromino tetromino){
 
 Tetromino getRandomTetromino(){
     Tetromino tetromino;
-    int tetrominoType = rand()%7 + 1;
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::mt19937 generator (seed);
+    int tetrominoType = generator() % 7 + 1;
 
     if(tetrominoType == T){
       tetromino.points[0].x = 5;
