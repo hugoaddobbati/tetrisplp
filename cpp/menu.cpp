@@ -1,7 +1,6 @@
 #include "menu.h"
 #include "tetris.h"
 #include <unistd.h>
-#include <windows.h>
 
 #pragma once
 void generateStartupFrames(){
@@ -23,7 +22,8 @@ void generateStartupFrames(){
       showMenuOptions(showText);
       showText = !showText;
     }
-    Sleep(500);
+    // Sleep(500);
+    usleep(500000);
   }
   endwin();
 }

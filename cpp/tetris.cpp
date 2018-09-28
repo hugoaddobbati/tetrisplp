@@ -1,10 +1,12 @@
 #include "tetris.h"
 #include <unistd.h>
-#include <windows.h>
+#include <time.h>
+#include <stdlib.h>
 #pragma once
 
 void start(){
     play();
+    srand(time(NULL));
 }
 
 void play(){
@@ -78,7 +80,7 @@ void play(){
     }
 
     while ((action = getch()) != -1);
-    Sleep(5);
+    usleep(3200);
 
 
   }
