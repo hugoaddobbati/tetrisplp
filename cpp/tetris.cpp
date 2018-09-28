@@ -97,7 +97,7 @@ void play(){
   in.close();
   if(score > record) record = score;
   ofstream out("records.txt");
-  out << score;
+  out << record;
   out.close();
 }
 
