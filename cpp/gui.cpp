@@ -126,8 +126,8 @@ void drawExtraInfo(GameState state, int score, int powerUpBar){
   /**
   * RECORD
   * */ 
-  mvprintw(yOFFSET-19 + X_ALIGN, 16+xOFFSET + Y_ALIGN_TETRIS, recordv);
-  mvprintw(yOFFSET-21 + X_ALIGN, 16+xOFFSET + Y_ALIGN_TETRIS, recordMsg);
+  mvprintw(yOFFSET-22 + X_ALIGN, 16+xOFFSET + Y_ALIGN_TETRIS, recordv);
+  mvprintw(yOFFSET-24 + X_ALIGN, 16+xOFFSET + Y_ALIGN_TETRIS, recordMsg);
 
 
   /**
