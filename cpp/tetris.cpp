@@ -39,6 +39,9 @@ void play(){
       state = simplify(state,score,powerUpBars);
       state.currentTetromino = copyTetro(state.nextTetromino);
       state.nextTetromino = getRandomTetromino();
+      if(isOver(state)){
+        break;
+      }
       showGameState(state,score, powerUpBars);
 
 

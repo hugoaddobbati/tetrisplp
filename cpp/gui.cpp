@@ -3,6 +3,7 @@
 #include <sstream>
 #include <unistd.h>
 #include <sys/ioctl.h>
+#include <fstream>
 #pragma once
 
 WINDOW * win;
@@ -103,17 +104,38 @@ void drawPoints(GameState state){
   }
 }
 
+std::string getRecord(){
+  std::string record;
+  std::ifstream in("records.txt");
+  in >> record;
+  in.close();
+  return record;
+}
 
 void drawExtraInfo(GameState state, int score, int powerUpBar){
   int xOFFSET = 40;
   int yOFFSET = 30;
   std::string s = std::to_string(score);
   char const *scoree = s.c_str();
+  char const *recordv = getRecord().c_str();
+  char recordMsg[] = "RECORD";
   char scoreMsg[] = "SCORE";
   char nextmsg[] = "NEXT TETROMINO";
   char powerUp[] = "POWERUPBAR";
+
+  /**
+  * RECORD
+  * */ 
+  mvprintw(yOFFSET-19 + X_ALIGN, 16+xOFFSET + Y_ALIGN_TETRIS, recordv);
+  mvprintw(yOFFSET-21 + X_ALIGN, 16+xOFFSET + Y_ALIGN_TETRIS, recordMsg);
+
+
+  /**
+   * Score
+   * */
   mvprintw(yOFFSET-15 + X_ALIGN, 16+xOFFSET + Y_ALIGN_TETRIS, scoree);
   mvprintw(yOFFSET-17 + X_ALIGN, 16+xOFFSET + Y_ALIGN_TETRIS, scoreMsg);
+
   mvprintw(yOFFSET-10 + X_ALIGN, 16+xOFFSET + Y_ALIGN_TETRIS, powerUp);
   attron(COLOR_PAIR(BLUE_PAIR));
   for(int i = 0; i < powerUpBar; i++){
