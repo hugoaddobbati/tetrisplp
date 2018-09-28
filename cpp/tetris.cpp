@@ -1,10 +1,15 @@
 #include "tetris.h"
 #include <unistd.h>
-#include <windows.h>
+#include <time.h>
+#include <stdlib.h>
+#include <fstream>
+using namespace std;
 #pragma once
 
 void start(){
     play();
+    srand(time(NULL));
+    noecho();
 }
 
 void play(){
@@ -34,6 +39,9 @@ void play(){
       state = simplify(state,score,powerUpBars);
       state.currentTetromino = copyTetro(state.nextTetromino);
       state.nextTetromino = getRandomTetromino();
+      if(isOver(state)){
+        break;
+      }
       showGameState(state,score, powerUpBars);
 
 
@@ -62,7 +70,7 @@ void play(){
       showGameState(state,score, powerUpBars);
 
     }
-    else if(counter >= 30){
+    else if(counter >= 6){
       counter = 0;
       state = moveDown(state);
       if(isOver(state)){
@@ -78,10 +86,19 @@ void play(){
     }
 
     while ((action = getch()) != -1);
-    Sleep(5);
+    usleep(35000);
 
 
   }
+
+  ifstream in("records.txt");
+  int record;
+  in >> record;
+  in.close();
+  if(score > record) record = score;
+  ofstream out("records.txt");
+  out << record;
+  out.close();
 }
 
 void endGame(){
