@@ -63,6 +63,7 @@ void startUp(){
   Y_ALIGN = (ts.ws_col - 150) / 2;
   cbreak();
   keypad(stdscr, TRUE);
+  curs_set(0);
   noecho();
   disableDelay();
   setupColors();

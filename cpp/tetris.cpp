@@ -7,6 +7,7 @@
 void start(){
     play();
     srand(time(NULL));
+    noecho();
 }
 
 void play(){
@@ -80,7 +81,7 @@ void play(){
     }
 
     while ((action = getch()) != -1);
-    usleep(3700);
+    usleep(5000);
 
 
   }
