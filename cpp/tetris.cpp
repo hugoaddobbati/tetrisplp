@@ -2,6 +2,8 @@
 #include <unistd.h>
 #include <time.h>
 #include <stdlib.h>
+#include <fstream>
+using namespace std;
 #pragma once
 
 void start(){
@@ -85,6 +87,15 @@ void play(){
 
 
   }
+
+  ifstream in("records.txt");
+  int record;
+  in >> record;
+  in.close();
+  if(score > record) record = score;
+  ofstream out("records.txt");
+  out << score;
+  out.close();
 }
 
 void endGame(){
