@@ -65,7 +65,7 @@ void play(){
       showGameState(state,score, powerUpBars);
 
     }
-    else if(counter >= 30){
+    else if(counter >= 6){
       counter = 0;
       state = moveDown(state);
       if(isOver(state)){
@@ -81,7 +81,7 @@ void play(){
     }
 
     while ((action = getch()) != -1);
-    usleep(5000);
+    usleep(35000);
 
 
   }
