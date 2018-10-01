@@ -2,7 +2,6 @@
 #include "tetris.h"
 #include <unistd.h>
 
-#pragma once
 void generateStartupFrames(){
   startUp();
   char c;
