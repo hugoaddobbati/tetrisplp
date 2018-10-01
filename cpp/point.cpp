@@ -1,5 +1,4 @@
 #include "point.h"
-#pragma once
 bool isEqual(Point pointA, Point pointB){
     if(pointA.x != pointB.x || pointA.y != pointB.y) return false;
     return true;

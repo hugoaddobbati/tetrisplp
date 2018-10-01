@@ -4,7 +4,6 @@
 #include <unistd.h>
 #include <sys/ioctl.h>
 #include <fstream>
-#pragma once
 
 WINDOW * win;
 

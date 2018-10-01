@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <fstream>
 using namespace std;
-#pragma once
 
 void start(){
     play();
