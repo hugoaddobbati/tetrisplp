@@ -4,6 +4,8 @@
 
 module Main where
 import System.IO
+import System.IO.Unsafe  
+import System.Random
 
 data Point = 
     Point {
