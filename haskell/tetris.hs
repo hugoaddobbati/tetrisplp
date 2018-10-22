@@ -7,6 +7,7 @@ import System.IO
 import System.IO.Unsafe  
 import System.Random
 
+
 import qualified Graphics.Vty as V
 import qualified Brick.Widgets.Border.Style as BS
 import Brick.Widgets.Border as B
@@ -48,6 +49,7 @@ import Brick.Widgets.Core
   ,withBorderStyle
   )
 
+
 data Point = 
     Point {
         _x :: Int,
@@ -68,6 +70,7 @@ data St =
         _g :: (Int, StdGen),
         _lastBestScore :: Int
        }
+
 
 theApp :: App St CustomEvent ()
 theApp =
