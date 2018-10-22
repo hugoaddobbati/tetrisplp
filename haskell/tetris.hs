@@ -7,7 +7,6 @@ import System.IO
 import System.IO.Unsafe  
 import System.Random
 
-
 import qualified Graphics.Vty as V
 import qualified Brick.Widgets.Border.Style as BS
 import Brick.Widgets.Border as B
@@ -49,6 +48,29 @@ import Brick.Widgets.Core
   ,withBorderStyle
   )
 
+drawUI :: St -> [Widget ()]
+drawUI st = [a]
+    where
+        a = C.hCenter $ 
+            C.vCenter $ 
+            hBox[
+                vBox
+                [padRight (Pad 5) $ borderWithLabel (str $ "score") $ padLeft (Pad 5) $  padRight (Pad 5) $ str $ show $ scr, 
+                padRight (Pad 5) $ padTop (Pad 2) $  borderWithLabel (str $ "last highscore") $ padLeft(Pad 7) $ padRight (Pad 7) $ str $ show $ bestScr],
+            vLimit 22 $ 
+            hLimit 22 $ 
+            borderWithLabel (str $ "not a tetris") $
+            drawGrid st,
+            vBox
+                [padLeft (Pad 5) $ borderWithLabel (str $ "nextTetro") $ padLeft (Pad 5) $ padRight (Pad 5) $ vb,
+                padLeft(Pad 5) $ padTop(Pad 2) $ borderWithLabel (str $ "PowerUP Status") $ padLeft (Pad 7) $ padRight(Pad 7) $ getPowerUpStatus st]]
+            
+        bd = st^.board
+        scr = bd^.score
+        var = length (getNumberOfRows bd)
+        vb = getNextTetrovBox ( getNextTetroPos (st))
+        bestScr = st^.lastBestScore
+  
 
 data Point = 
     Point {
@@ -70,7 +92,6 @@ data St =
         _g :: (Int, StdGen),
         _lastBestScore :: Int
        }
-
 
 theApp :: App St CustomEvent ()
 theApp =
@@ -133,7 +154,6 @@ getScore st = sc
     where
         bd = st^.board
         sc = bd^.score
-
 
 main :: IO ()
 main = do putStrLn $ "it Works"
