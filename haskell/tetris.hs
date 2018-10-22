@@ -131,6 +131,5 @@ getScore st = sc
         bd = st^.board
         sc = bd^.score
 
-
 main :: IO ()
 main = do putStrLn $ "it Works"
