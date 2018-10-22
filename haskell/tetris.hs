@@ -6,6 +6,14 @@ module Main where
 import System.IO
 import System.IO.Unsafe  
 import System.Random
+import Lens.Micro ((^.), (&), (.~), (%~))
+import Lens.Micro.TH (makeLenses)
+import Control.Monad (void, forever)
+import Control.Concurrent (threadDelay, forkIO)
+
+#if !(MIN_VERSION_base(4,11,0))
+import Data.Monoid
+#endif
 
 import qualified Graphics.Vty as V
 import qualified Brick.Widgets.Border.Style as BS
@@ -70,7 +78,10 @@ drawUI st = [a]
         var = length (getNumberOfRows bd)
         vb = getNextTetrovBox ( getNextTetroPos (st))
         bestScr = st^.lastBestScore
-  
+ 
+makeLenses ''St
+makeLenses ''Board
+makeLenses ''Point
 
 data Point = 
     Point {
