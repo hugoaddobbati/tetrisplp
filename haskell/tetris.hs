@@ -56,6 +56,118 @@ import Brick.Widgets.Core
   ,withBorderStyle
   )
 
+  data CustomEvent = Counter deriving Show
+
+---------------------
+-- MOVE TETROMINO DOWN, CLEAR ROWS AND PUT NEW TETROMINO IF FULL
+
+tryGoDownTetromino :: St -> EventM () (Next St)
+tryGoDownTetromino st = 
+    if isValidState tmpBd
+        then goDownTetromino st
+        else halt $ st
+    where 
+        newSt = simulateNextBoard st
+        tmpBd = newSt^.board
+        
+
+
+simulateNextBoard :: St -> St
+simulateNextBoard st = 
+    if isValidState (goDown simulatedBoard)
+        then st & board %~ goDown
+        else st & board %~ (appendAndClearRow (st ^. g)) 
+                & g %~ newR
+    where simulatedBoard = st^.board    
+
+              
+
+
+goDownTetromino :: St -> EventM () (Next St)
+goDownTetromino st = continue 
+    $ if isValidState (goDown simulatedBoard)
+        then st & board %~ goDown
+        else st & board %~ (appendAndClearRow (st ^. g)) 
+                & g %~ newR
+    where simulatedBoard = st^.board    
+
+getIntFromStd :: (Int, StdGen) -> Int
+getIntFromStd (x,y) = ((x `mod` 7)+1)
+
+
+newR :: (Int, StdGen) -> (Int, StdGen)
+newR (x, y) = randomR (1,7) y
+
+goDown :: Board -> Board
+goDown bd = bd & tetrominoPts %~ map movePointDown
+
+movePointDown :: Point -> Point
+movePointDown p = p & y %~ (+1)
+
+appendAndClearRow :: (Int, StdGen) -> Board -> Board
+appendAndClearRow (a,b) bd = clearRows (appendPiece (a,b) bd)
+
+clearRows :: Board -> Board
+clearRows bd = bd & points %~ removeAndFix 
+
+removeAndFix :: [Point] -> [Point]
+removeAndFix pts = removeAllRows (removeRow) 0 rows pts
+    where   
+        rows = getFullRows pts
+        t = (length rows) + (-1)
+
+
+removeAllRows :: (Int -> [Point] -> [Point]) -> Int -> [Int] -> [Point] -> [Point]
+removeAllRows op n rows pts
+    |length rows == 0 = pts
+    |n == (length rows) -1  = (op (nth n rows) pts)
+    |otherwise = removeAllRows op (n+1) rows (op (nth n rows) pts)
+
+removeRow :: Int -> [Point] -> [Point]
+removeRow _ [] = []
+removeRow n (x:xs) = if x^.y == n
+                        then removeRow n xs
+                        else if x^.y < n
+                            then [x & y %~ (+1)] ++ removeRow n xs
+                            else [x] ++ removeRow n xs
+
+isRowFull :: Int -> [Point] -> Bool
+isRowFull rowNum pts = (length temporary) == 10
+    where
+        temporary = [x | x <-pts, x^.y == rowNum]
+
+getFullRows:: [Point] -> [Int]
+getFullRows pts = [y | y <- [0..19], isRowFull y pts]
+
+getScorePostAppend :: Board -> Int
+getScorePostAppend bd 
+    |rows == 0 = 0
+    |rows == 1 = 100
+    |rows == 2 = 300
+    |rows == 3 = 800
+    |rows == 4 = 2000
+    where 
+        rows = length $ getFullRows ((bd & points %~ (<>) pts)^.points)
+        pts = bd^.tetrominoPts
+
+
+        
+getLinesPostAppend :: Board -> Int
+getLinesPostAppend bd = l
+    where
+        l = length $ getFullRows ((bd & points %~ (<>) pts)^.points)
+        pts = bd^.tetrominoPts
+
+appendPiece :: (Int, StdGen) -> Board -> Board
+appendPiece (a,b) bd = bd & points %~ (<>) pts
+                        & tetrominoPts .~ getT a
+                        & score %~ (+ getScorePostAppend (bd))
+                        & powerUp %~ (+ getLinesPostAppend (bd))
+    where
+        pts = bd^.tetrominoPts
+
+
+
 drawUI :: St -> [Widget ()]
 drawUI st = [a]
     where
@@ -148,6 +260,8 @@ theMap = attrMap globalDefault
 
 initBoard :: Board
 initBoard = Board getRandomTetromino [] 0 0
+
+data CustomEvent = Counter deriving Show
 
 playGame :: Int -> IO St
 playGame a = do
