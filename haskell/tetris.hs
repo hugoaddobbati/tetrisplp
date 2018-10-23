@@ -165,6 +165,22 @@ appendPiece (a,b) bd = bd & points %~ (<>) pts
                         & powerUp %~ (+ getLinesPostAppend (bd))
     where
         pts = bd^.tetrominoPts
+--------------------
+-- MOVE TETROMINO LEFT
+
+goLeftTetromino :: St -> EventM () (Next St)
+goLeftTetromino st = continue 
+    $ if isValidState (goLeft simulatedBoard)
+        then st & board %~ goLeft
+        else st
+    where simulatedBoard = st^.board
+
+goLeft :: Board -> Board
+goLeft bd = bd & tetrominoPts %~ map movePointLeft
+
+movePointLeft :: Point -> Point
+movePointLeft p = p & x %~ (+(-1))
+
 
 --------------------------------
 -- MOVE TETROMINO RIGHT
