@@ -198,6 +198,30 @@ goRight bd = bd & tetrominoPts %~ map movePointRight
 movePointRight :: Point -> Point
 movePointRight p = p & x %~ (+1)
 
+------------------------------
+-- ROTATE TETROMINO
+
+rotateTetrominoSt :: St -> EventM () (Next St)
+rotateTetrominoSt st = continue 
+    $ if isValidState (rotateTetrominoBd simulatedBoard)
+        then st & board %~ rotateTetrominoBd
+        else st
+    where simulatedBoard = st^.board
+            
+             
+rotateTetrominoBd :: Board -> Board
+rotateTetrominoBd bd = bd & tetrominoPts %~ rotateTetromino
+
+rotateTetromino :: [Point] -> [Point]
+rotateTetromino pts = [rotatePoint ptCentral pt | pt <- pts]
+    where 
+        ptCentral = nth 0 pts
+
+rotatePoint :: Point -> Point -> Point
+rotatePoint centPoint normalPoint = Point (centPoint^.x - normalPoint^.y + centPoint^.y) (centPoint^.y + normalPoint^.x - centPoint^.x) (normalPoint^.color)
+
+-------------------------------
+
 drawUI :: St -> [Widget ()]
 drawUI st = [a]
     where
