@@ -56,7 +56,33 @@ import Brick.Widgets.Core
   ,withBorderStyle
   )
 
-  data CustomEvent = Counter deriving Show
+data CustomEvent = Counter deriving Show
+
+data Point = 
+    Point {
+        _x :: Int,
+        _y :: Int,
+        _color :: [Char]
+    }
+
+data Board = 
+    Board {
+        _tetrominoPts :: [Point],
+        _points :: [Point],
+        _score :: Int,
+        _powerUp :: Int
+    }
+
+data St =
+    St {_board :: Board,
+        _g :: (Int, StdGen),
+        _lastBestScore :: Int
+       }
+
+makeLenses ''St
+makeLenses ''Board
+makeLenses ''Point
+       
 
 ----------------------
 -- FORCE TETROMINO DOWN
@@ -409,30 +435,13 @@ getTetrominoPts bd = bd ^. tetrominoPts
 getPts :: Board -> [Point]
 getPts bd = bd ^. points
  
-makeLenses ''St
-makeLenses ''Board
-makeLenses ''Point
-
-data Point = 
-    Point {
-        _x :: Int,
-        _y :: Int,
-        _color :: [Char]
-    }
-
-data Board = 
-    Board {
-        _tetrominoPts :: [Point],
-        _points :: [Point],
-        _score :: Int,
-        _powerUp :: Int
-    }
-
-data St =
-    St {_board :: Board,
-        _g :: (Int, StdGen),
-        _lastBestScore :: Int
+initialState :: Int -> St
+initialState a =
+    St { _board = initBoard,
+        _g = randomR (1,7) (mkStdGen getRandomIntNoBounds) :: (Int, StdGen),
+        _lastBestScore = a
        }
+
 
 theApp :: App St CustomEvent ()
 theApp =
@@ -478,6 +487,13 @@ theMap = attrMap globalDefault
 
 initBoard :: Board
 initBoard = Board getRandomTetromino [] 0 0
+
+getRandomIntNoBounds :: Int
+getRandomIntNoBounds = unsafePerformIO (getStdRandom (randomR (1, 13215616)))
+
+getRandomInt :: Int
+getRandomInt = unsafePerformIO (getStdRandom (randomR (1, 7)))
+
 
 getRandomTetromino :: [Point]
 getRandomTetromino = getT getRandomInt
