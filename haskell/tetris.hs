@@ -56,7 +56,33 @@ import Brick.Widgets.Core
   ,withBorderStyle
   )
 
-  data CustomEvent = Counter deriving Show
+data CustomEvent = Counter deriving Show
+
+data Point = 
+    Point {
+        _x :: Int,
+        _y :: Int,
+        _color :: [Char]
+    }
+
+data Board = 
+    Board {
+        _tetrominoPts :: [Point],
+        _points :: [Point],
+        _score :: Int,
+        _powerUp :: Int
+    }
+
+data St =
+    St {_board :: Board,
+        _g :: (Int, StdGen),
+        _lastBestScore :: Int
+       }
+
+makeLenses ''St
+makeLenses ''Board
+makeLenses ''Point
+       
 
 ----------------------
 -- FORCE TETROMINO DOWN
@@ -292,6 +318,12 @@ pointsHasPoint (x:xs) point =
 
 pointIsEqual :: Point -> Point -> Bool
 pointIsEqual p1 p2 = p1^.x == p2^.x && p1^.y == p2^.y
+
+nth :: Int -> [a] -> a
+nth 0 (x : _)  = x
+nth n (_ : xs) = nth (n - 1) xs
+
+
 ------------------------------------------------
 
 drawUI :: St -> [Widget ()]
@@ -403,30 +435,13 @@ getTetrominoPts bd = bd ^. tetrominoPts
 getPts :: Board -> [Point]
 getPts bd = bd ^. points
  
-makeLenses ''St
-makeLenses ''Board
-makeLenses ''Point
-
-data Point = 
-    Point {
-        _x :: Int,
-        _y :: Int,
-        _color :: [Char]
-    }
-
-data Board = 
-    Board {
-        _tetrominoPts :: [Point],
-        _points :: [Point],
-        _score :: Int,
-        _powerUp :: Int
-    }
-
-data St =
-    St {_board :: Board,
-        _g :: (Int, StdGen),
-        _lastBestScore :: Int
+initialState :: Int -> St
+initialState a =
+    St { _board = initBoard,
+        _g = randomR (1,7) (mkStdGen getRandomIntNoBounds) :: (Int, StdGen),
+        _lastBestScore = a
        }
+
 
 theApp :: App St CustomEvent ()
 theApp =
@@ -473,7 +488,26 @@ theMap = attrMap globalDefault
 initBoard :: Board
 initBoard = Board getRandomTetromino [] 0 0
 
-data CustomEvent = Counter deriving Show
+getRandomIntNoBounds :: Int
+getRandomIntNoBounds = unsafePerformIO (getStdRandom (randomR (1, 13215616)))
+
+getRandomInt :: Int
+getRandomInt = unsafePerformIO (getStdRandom (randomR (1, 7)))
+
+
+getRandomTetromino :: [Point]
+getRandomTetromino = getT getRandomInt
+
+getT :: Int -> [Point]
+getT c
+    | c == 1 = [ Point 5 1 "T", Point 5 0 "T", Point 6 1 "T", Point 4 1 "T"]
+    | c == 2 = [ Point 5 1 "Z", Point 5 0 "Z", Point 4 1 "Z", Point 4 2 "Z"]
+    | c == 3 = [ Point 5 1 "I", Point 5 0 "I", Point 5 2 "I", Point 5 3 "I"]
+    | c == 4 = [ Point 5 1 "L", Point 6 1 "L", Point 4 1 "L", Point 6 0 "L"]
+    | c == 5 = [ Point 5 1 "J", Point 5 0 "J", Point 6 0 "J", Point 5 2 "J"]
+    | c == 6 = [ Point 5 1 "S", Point 5 0 "S", Point 6 0 "S", Point 4 1 "S"]
+    | c == 7 = [ Point 5 0 "O", Point 6 0 "O", Point 6 1 "O", Point 5 1 "O"]
+
 
 playGame :: Int -> IO St
 playGame a = do
@@ -493,4 +527,15 @@ getScore st = sc
         sc = bd^.score
 
 main :: IO ()
-main = do putStrLn $ "it Works"
+main = do 
+    handle <- openFile "score.txt" ReadMode
+    contents <- hGetContents handle
+    game <- playGame (read $ contents)
+    length contents `seq` (writeFile "score.txt" $ show $ biggestOfTwo contents (getScore game))
+----------------------------------
+
+biggestOfTwo :: [Char] -> Int -> Int 
+biggestOfTwo x y =
+    if (read $ x) > y 
+        then (read $ x)
+        else y
