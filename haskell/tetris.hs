@@ -166,7 +166,21 @@ appendPiece (a,b) bd = bd & points %~ (<>) pts
     where
         pts = bd^.tetrominoPts
 
+--------------------------------
+-- MOVE TETROMINO RIGHT
 
+goRightTetromino :: St -> EventM () (Next St)
+goRightTetromino st = continue 
+    $ if isValidState (goRight simulatedBoard)
+        then st & board %~ goRight
+        else st
+    where simulatedBoard = st^.board
+
+goRight :: Board -> Board
+goRight bd = bd & tetrominoPts %~ map movePointRight
+
+movePointRight :: Point -> Point
+movePointRight p = p & x %~ (+1)
 
 drawUI :: St -> [Widget ()]
 drawUI st = [a]
