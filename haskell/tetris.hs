@@ -222,6 +222,32 @@ rotatePoint centPoint normalPoint = Point (centPoint^.x - normalPoint^.y + centP
 
 -------------------------------
 
+isValidState :: Board -> Bool
+isValidState board =
+    isValidCompare (board^.points) (board^.tetrominoPts)
+
+isValidCompare :: [Point] -> [Point] -> Bool
+isValidCompare points tetrominoPoints = null [p | p <- tetrominoPoints, pointsHasPoint points p || isOutOfBounds tetrominoPoints]
+
+isOutOfBounds :: [Point] -> Bool
+isOutOfBounds [] = False
+isOutOfBounds (p:ps) =
+    if p^.x > 9 || p^.x < 0 || p^.y > 19 || p^.y < 0
+        then True
+        else isOutOfBounds ps
+
+pointsHasPoint :: [Point] -> Point -> Bool
+pointsHasPoint [] _ = False
+pointsHasPoint (x:xs) point = 
+    if pointIsEqual point x
+        then True
+        else pointsHasPoint xs point
+
+
+pointIsEqual :: Point -> Point -> Bool
+pointIsEqual p1 p2 = p1^.x == p2^.x && p1^.y == p2^.y
+------------------------------------------------
+
 drawUI :: St -> [Widget ()]
 drawUI st = [a]
     where
