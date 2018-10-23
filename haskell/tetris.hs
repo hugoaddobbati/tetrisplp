@@ -292,6 +292,12 @@ pointsHasPoint (x:xs) point =
 
 pointIsEqual :: Point -> Point -> Bool
 pointIsEqual p1 p2 = p1^.x == p2^.x && p1^.y == p2^.y
+
+nth :: Int -> [a] -> a
+nth 0 (x : _)  = x
+nth n (_ : xs) = nth (n - 1) xs
+
+
 ------------------------------------------------
 
 drawUI :: St -> [Widget ()]
@@ -473,7 +479,19 @@ theMap = attrMap globalDefault
 initBoard :: Board
 initBoard = Board getRandomTetromino [] 0 0
 
-data CustomEvent = Counter deriving Show
+getRandomTetromino :: [Point]
+getRandomTetromino = getT getRandomInt
+
+getT :: Int -> [Point]
+getT c
+    | c == 1 = [ Point 5 1 "T", Point 5 0 "T", Point 6 1 "T", Point 4 1 "T"]
+    | c == 2 = [ Point 5 1 "Z", Point 5 0 "Z", Point 4 1 "Z", Point 4 2 "Z"]
+    | c == 3 = [ Point 5 1 "I", Point 5 0 "I", Point 5 2 "I", Point 5 3 "I"]
+    | c == 4 = [ Point 5 1 "L", Point 6 1 "L", Point 4 1 "L", Point 6 0 "L"]
+    | c == 5 = [ Point 5 1 "J", Point 5 0 "J", Point 6 0 "J", Point 5 2 "J"]
+    | c == 6 = [ Point 5 1 "S", Point 5 0 "S", Point 6 0 "S", Point 4 1 "S"]
+    | c == 7 = [ Point 5 0 "O", Point 6 0 "O", Point 6 1 "O", Point 5 1 "O"]
+
 
 playGame :: Int -> IO St
 playGame a = do
