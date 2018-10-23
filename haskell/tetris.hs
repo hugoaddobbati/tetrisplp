@@ -57,6 +57,34 @@ import Brick.Widgets.Core
   )
 
   data CustomEvent = Counter deriving Show
+-------------------------
+--PowerUp Swap
+
+powerUpSwap :: (Int, StdGen) -> St -> St
+powerUpSwap (a,b) st = 
+    st & board %~ changeTetromino a
+        & g %~ newR
+
+changeTetromino :: Int -> Board -> Board
+changeTetromino t bd = 
+    bd & tetrominoPts .~ getT t
+        & powerUp .~ 0
+
+
+pwUp :: St -> St
+pwUp st = 
+    powerUpSwap seed st
+    where seed = st^.g
+
+powerUpSt :: St -> EventM () (Next St)
+powerUpSt st = continue 
+    $ if pu >= 5
+        then pwUp st
+        else st
+    where 
+        bd = st^.board
+        pu = bd^.powerUp
+
 
 ---------------------
 -- MOVE TETROMINO DOWN, CLEAR ROWS AND PUT NEW TETROMINO IF FULL
