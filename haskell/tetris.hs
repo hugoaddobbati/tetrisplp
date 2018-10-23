@@ -57,6 +57,24 @@ import Brick.Widgets.Core
   )
 
   data CustomEvent = Counter deriving Show
+
+----------------------
+-- FORCE TETROMINO DOWN
+
+pushDownTetrominoEvent :: St -> EventM () (Next St)
+pushDownTetrominoEvent st = continue $ pushDownTetromino st
+    
+
+pushDownTetromino :: St -> St
+pushDownTetromino st = st & board %~ modifyBoardPushDown
+
+modifyBoardPushDown :: Board -> Board
+modifyBoardPushDown board =
+    if isValidState (goDown board)
+        then modifyBoardPushDown (goDown board)
+        else board
+
+
 -------------------------
 --PowerUp Swap
 
