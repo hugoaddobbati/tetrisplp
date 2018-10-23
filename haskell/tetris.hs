@@ -511,4 +511,15 @@ getScore st = sc
         sc = bd^.score
 
 main :: IO ()
-main = do putStrLn $ "it Works"
+main = do 
+    handle <- openFile "score.txt" ReadMode
+    contents <- hGetContents handle
+    game <- playGame (read $ contents)
+    length contents `seq` (writeFile "score.txt" $ show $ biggestOfTwo contents (getScore game))
+----------------------------------
+
+biggestOfTwo :: [Char] -> Int -> Int 
+biggestOfTwo x y =
+    if (read $ x) > y 
+        then (read $ x)
+        else y
