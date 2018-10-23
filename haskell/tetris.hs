@@ -316,6 +316,92 @@ drawUI st = [a]
         var = length (getNumberOfRows bd)
         vb = getNextTetrovBox ( getNextTetroPos (st))
         bestScr = st^.lastBestScore
+
+getPowerUpStatus :: St -> Widget ()
+getPowerUpStatus st = getWidgetFromPUStatus pu
+    where 
+        bd = st^.board
+        pu = bd^.powerUp
+
+getWidgetFromPUStatus :: Int -> Widget ()
+getWidgetFromPUStatus x = 
+    if x >= 5
+        then withAttr "readyStatus" $ str $ "  Ready!  "
+        else withAttr "notReadyStatus" $ str $ "Not Ready!"
+
+        
+
+
+
+getNextTetrovBox :: [Point] -> Widget ()
+getNextTetrovBox pts = vBox $  ((<>) [hBox $ [str $ " "]] [getElemRowNT row pts| row <- [0..4]])
+
+getElemRowNT :: Int -> [Point] -> Widget ()
+getElemRowNT rowN pts = hBox $ [getPosToNT x rowN pts| x <- [0..4]]
+
+getPosToNT :: Int -> Int -> [Point] -> Widget ()
+getPosToNT xp yp [] = withAttr "general" $ str $ "  "
+getPosToNT xp yp (p:ps) = 
+    if p^.x == xp && p^.y == yp
+        then withAttr (attrName (p^.color)) $ str $ "  "
+        else getPosToNT xp yp ps
+
+getNextTetroPos :: St -> [Point]
+getNextTetroPos st = pos
+    where
+        posTmp = getT (getTetroPos (st))
+        pos = [p & x %~ (+(-3)) | p <- posTmp]
+
+getNumberOfRows :: Board -> [Int]
+getNumberOfRows bd = getFullRows (bd2^.points)
+    where
+        bd2 = bd & points %~ (<>) pts
+        pts = bd^.tetrominoPts
+
+
+getTetroPos :: St -> Int
+getTetroPos st = a 
+    where
+        (a, b) = st^.g
+
+posToPoint :: Int -> Int -> [Point] -> [Point] -> Widget ()
+posToPoint xp yp [] [] = withAttr "general" $ str $ "  "
+posToPoint xp yp (p:ps) [] = 
+    if p ^. x == xp && p ^. y == yp
+        then withAttr (attrName (p^.color)) $ str $ "  "
+        else posToPoint xp yp ps []
+posToPoint xp yp [] (p:ps) = 
+    if p ^. x == xp && p ^. y == yp
+        then withAttr (attrName (p^.color)) $ str $ "  "
+        else posToPoint xp yp [] ps 
+posToPoint xp yp (a:as) (p:ps) = 
+    if p ^. x == xp && p ^. y == yp
+        then withAttr (attrName (p^.color)) $ str $ "  "
+        else if a ^. x == xp && a ^. y == yp
+            then withAttr (attrName (a^.color)) $ str $ "  "
+            else posToPoint xp yp as ps 
+        
+
+
+drawGrid :: St -> Widget ()
+drawGrid st = vBox rows
+    where
+        points = getTetrominoPts $ getBoard $ st
+        points2 = getPts $ getBoard $ st
+        rows = [getElemRow arow points points2 | arow <- [0..19]]
+
+
+getElemRow :: Int -> [Point] -> [Point] -> Widget ()
+getElemRow row points points2 = hBox [posToPoint col row points points2 | col <- [0..9]]
+        
+getBoard :: St -> Board
+getBoard st = st ^. board
+
+getTetrominoPts :: Board -> [Point]
+getTetrominoPts bd = bd ^. tetrominoPts
+
+getPts :: Board -> [Point]
+getPts bd = bd ^. points
  
 makeLenses ''St
 makeLenses ''Board
