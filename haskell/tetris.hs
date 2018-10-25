@@ -333,14 +333,15 @@ drawUI st = [a]
             C.vCenter $ 
             hBox[
                 vBox
-                [padRight (Pad 5) $ borderWithLabel (str $ "score") $ padLeft (Pad 5) $  padRight (Pad 5) $ str $ show $ scr, 
-                padRight (Pad 5) $ padTop (Pad 2) $  borderWithLabel (str $ "last highscore") $ padLeft(Pad 7) $ padRight (Pad 7) $ str $ show $ bestScr],
+                [padRight (Pad 5) $ borderWithLabel (str $ "Score") $ padLeft (Pad 5) $  padRight (Pad 5) $ str $ show $ scr, 
+                padRight (Pad 5) $ padTop (Pad 2) $  borderWithLabel (str $ "Last Highscore") $ padLeft(Pad 7) $ padRight (Pad 7) $ str $ show $ bestScr,
+                padRight (Pad 5) $ padTop (Pad 2) $  borderWithLabel (str $ "Controls") $ getVboxControls ],
             vLimit 22 $ 
             hLimit 22 $ 
-            borderWithLabel (str $ "not a tetris") $
+            borderWithLabel (str $ "Maybe a tetris") $
             drawGrid st,
             vBox
-                [padLeft (Pad 5) $ borderWithLabel (str $ "nextTetro") $ padLeft (Pad 5) $ padRight (Pad 5) $ vb,
+                [padLeft (Pad 5) $ borderWithLabel (str $ "Next Tetro") $ padLeft (Pad 5) $ padRight (Pad 5) $ vb,
                 padLeft(Pad 5) $ padTop(Pad 2) $ borderWithLabel (str $ "PowerUP Status") $ padLeft (Pad 7) $ padRight(Pad 7) $ getPowerUpStatus st]]
             
         bd = st^.board
@@ -349,6 +350,16 @@ drawUI st = [a]
         vb = getNextTetrovBox ( getNextTetroPos (st))
         bestScr = st^.lastBestScore
 
+
+getVboxControls :: Widget ()
+getVboxControls =  padLeft (Pad 1) $ padRight(Pad 1) $ vBox [ str $ "← - Left",
+                        str $ "→ - Right",
+                        str $ "↓ - Down",
+                        str $ "↑ - Rotate",
+                        str $ "Space - Drop",
+                        str $ "P - PowerUP",
+                        str $ "ESC - Quit"]
+        
 getPowerUpStatus :: St -> Widget ()
 getPowerUpStatus st = getWidgetFromPUStatus pu
     where 
