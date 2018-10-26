@@ -2,7 +2,7 @@
 
 ## What's ?
 
-A tetris-like game implemented in 2 different langauges (C++, Haskell).
+A tetris-like game implemented in 2 different languages (C++, Haskell).
 
 TODO: Implementation in Prolog
 
