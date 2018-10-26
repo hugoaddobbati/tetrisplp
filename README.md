@@ -8,7 +8,8 @@ TODO: Implementation in Prolog
 
 ## How to play 
 
-The game is played in terminal and commands can change for different languages but the whole UI and logic is the same.
+The game is played in terminal and commands can change for different languages but the whole UI and logic is the same, there
+are more precise instructions on each folder.
 
 ## Developed by:
 
