@@ -13,7 +13,7 @@ are more precise instructions on each folder.
 
 ## Developed by:
 
-* [Hugo Addobbatti](https://github.com/hugoaddobbati)
+* [Hugo Addobbati](https://github.com/hugoaddobbati)
 * [Felipe Mota](https://github.com/fmota0)
 * [José Vinícius Lacerda de Arruda](https://github.com/viniciuslacerda0)
 * [Katson Matheus](https://github.com/katson1)
