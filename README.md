@@ -16,3 +16,4 @@ are more precise instructions on each folder.
 * [Hugo Addobbati](https://github.com/hugoaddobbati)
 * [Katson Matheus](https://github.com/katson1)
 * [Arthur Silva](https://github.com/arthur1silva)
+* [Felipe Mota](https://github.com/fmota0)
